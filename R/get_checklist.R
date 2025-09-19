@@ -1,26 +1,13 @@
-# get a random ebird checklist
+# get an ebird checklist
 
-random_ebird_checklist <- function(){
+get_checklist <- function(year, month, day, rc){
   # fist get api key
   ebird_key <- readLines("ebird_api_key")
 
 
-# curl --location -g 'https://api.ebird.org/v2/product/lists/{{regionCode}}/{{y}}/{{m}}/{{d}}' --header 'X-eBirdApiToken: {{x-ebirdapitoken}}'
-
-  year <- 2025
-  month <- 1
-  day <- 29
-
-  ## get region codes
-  #rc <- read_xlsx("data/eBird\ regions\ and\ region\ codes_18Apr2023.xlsx", sheet=3)
-  ## get a random region
-  #rc <- rc[sample(1:nrow(rc), 1), ]
-
-  # fix for now
-  rc <- "GB-SCT-FIF"
-
   # build a url
   # this for the "Checklist feed on a date"
+  # curl --location -g 'https://api.ebird.org/v2/product/lists/{{regionCode}}/{{y}}/{{m}}/{{d}}' --header 'X-eBirdApiToken: {{x-ebirdapitoken}}'
   a_url <- paste0("https://api.ebird.org/v2/product/lists/",
                   rc,# {{regionCode}}
                   "/",
@@ -38,11 +25,15 @@ random_ebird_checklist <- function(){
   )
   con <- curl(a_url, handle = h)
   # this is yucky JSON
-  chks <- readLines(con)
+  chks <- readLines(con, warn=FALSE)
 
   # make things non-yucky
   # list o' lists
   lol <- jsonlite::parse_json(chks)
+
+  if(length(lol) == 0){
+    stop("No checklists in this place/time!")
+  }
 
   # just want one of these, so grab that
   ss <- lol[[sample(1:length(lol), 1)]]
@@ -57,7 +48,7 @@ random_ebird_checklist <- function(){
   chklst_url <- paste0("https://api.ebird.org/v2/product/checklist/view/",
                        ss$subId)
   con <- curl(chklst_url, handle = h)
-  chklst <- jsonlite::parse_json(readLines(con))
+  chklst <- jsonlite::parse_json(readLines(con, warn=FALSE))
   sps <- unlist(lapply(chklst$obs, `[[`, "speciesCode"))
 
 
@@ -65,28 +56,8 @@ random_ebird_checklist <- function(){
   sci_nm <- auk::ebird_species(sps)
   com_nm <- auk::ebird_species(sps, "common")
 
+  chk_desc$sci_nm <- sci_nm
+  chk_desc$com_nm <- com_nm
 
-  # now get some noises
-  xc_key <- readLines("xenocanto_api_key")
-
-  quality <- "A"
-
-  a_sci_nm <- sub(" ", "%20", sci_nm[1])
-  xc_url <- paste0('https://xeno-canto.org/api/3/recordings?query=sp:"',
-                   a_sci_nm,
-                   '"&per_page=10',
-                   "&q=",quality,
-                   '&key=', xc_key)
-  con <- curl(xc_url)
-  quack <- jsonlite::parse_json(readLines(con))
-
-  aquack <- quack$recordings[[sample(1:length(quack$recordings), 1)]]
-
-  aquack_meta <- list(user = aquack$rec,
-                      loc  = aquack$loc,
-                      url  = aquack$url
-                      length  = aquack$length,
-                      file  = aquack$file)
-
-
+  chk_desc
 }

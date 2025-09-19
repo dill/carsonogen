@@ -1,6 +1,9 @@
-# silent-er spring
+# Carson-o-gen
 
-Idea: [Morrison et al (2021)](https://www.nature.com/articles/s41467-021-26488-1)
+Idea: listen to a random eBird checklist at a given place and time. Sounds from xeno-canto.
+
+Idea source: [Morrison et al (2021)](https://www.nature.com/articles/s41467-021-26488-1)
+
 
 ## To run this
 
