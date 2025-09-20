@@ -13,11 +13,14 @@ get_quack <- function(sci_nm){
     # docos https://xeno-canto.org/explore/api
     xc_url <- paste0('https://xeno-canto.org/api/3/recordings?query=sp:"',
                      a_sci_nm,
-                     '"&per_page=10',
-                     "&q=",quality,
+                     '"+q:', quality,
+                     '+lic:"BY-NC-SA"',
+                     '+len:"<40"',
+                     '&per_page=10',
                      '&key=', xc_key)
     con <- curl(xc_url)
-    quack <- jsonlite::parse_json(readLines(con, warn=FALSE))
+    #quack <- jsonlite::parse_json(readLines(con, warn=FALSE))
+    quack <- jsonlite::parse_json(readLines(con))
     close(con)
 
     if(length(quack) > 0) break
