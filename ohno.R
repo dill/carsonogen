@@ -11,6 +11,9 @@ re <- get_checklist(2022, 01, 29, "GB-SCT-FIF")
 
 
 # get audio data
-aud <- lapply(re$sci_nm, get_quack)
+aud <- do.call(rbind, lapply(re$sci_nm, get_quack))
+aud2 <- get_mp3z(aud)
 
+
+soxygenize(aud2)
 
