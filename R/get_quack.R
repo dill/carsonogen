@@ -16,7 +16,7 @@ get_quack <- function(sci_nm){
                      '"+q:', quality,
                      '+lic:"BY-NC-SA"',
                      '+len:"<40"',
-                     '&per_page=10',
+                     '&per_page=20',
                      '&key=', xc_key)
     con <- curl(xc_url)
     #quack <- jsonlite::parse_json(readLines(con, warn=FALSE))
