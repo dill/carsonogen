@@ -18,7 +18,7 @@ get_checklist <- function(year, month, day, rc){
                   day#{{d}}
                  )
 
-  # soem hieroglyphics to get the data
+  # some hieroglyphics to get the data
   h <- new_handle(verbose = TRUE)
   handle_setheaders(h,
    "X-eBirdApiToken" = ebird_key
