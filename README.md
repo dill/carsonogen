@@ -9,6 +9,7 @@ Idea source: [Morrison et al (2021)](https://www.nature.com/articles/s41467-021-
 
 - You need an eBird API key, which you can get [here](https://ebird.org/api/keygen) put that in a plain text file called `ebird_api_key`
 - You need a xeno-canto API key, which you get when you register for an account and verify your e-mail address
+- You need [`sox`](http://sox.sourceforge.net/) and [`lame`](https://lame.sourceforge.io/)
 
 ## Resources
 

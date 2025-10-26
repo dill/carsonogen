@@ -20,7 +20,7 @@ while(class(re) == "try-error" & it < 100){
   yr <- sample(yrs, 1, prob=exp(1:length(yrs))/sum(exp(1:length(yrs))))
   mn <- sample(1:12, 1)
   dy <- sample(1:mn_ln[mn], 1)
-  re <- get_checklist(yr, mn, dy, "GB-SCT-FIF")
+  re <- try(get_checklist(yr, mn, dy, "GB-SCT-FIF"))
   it <- it + 1
 }
 
