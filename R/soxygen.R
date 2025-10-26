@@ -31,14 +31,17 @@ soxygenize <- function(auds, clip_length=30){
 
 
   # splunge them all together
-  newfn <- "tmp/new.mp3"
+  newfn <- paste0("final_mp3/", format(Sys.time(), "%d-%m-%Y_%H%M"), ".mp3")
   system2("sox",
           c("-m",
             "tmp/\\*\\.mp3",
             newfn))
 
-  # now trim leading and ending silence
+  # remove temporary mp3 files
+  tmps <- list.files("tmp/", ".mp3$", full.names=TRUE)
+  file.remove(tmps)
 
+  newfn
 }
 
 newfnfn <- function(fn, bit){

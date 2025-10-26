@@ -56,8 +56,13 @@ get_checklist <- function(year, month, day, rc){
   sci_nm <- auk::ebird_species(sps)
   com_nm <- auk::ebird_species(sps, "common")
 
+  # add in the species names scientific (for xeno-canto) and for
+  # normal humans (common names)
   chk_desc$sci_nm <- sci_nm
   chk_desc$com_nm <- com_nm
+
+  # add the checklist id
+  chk_desc$chk_id <- ss$subId
 
   chk_desc
 }
